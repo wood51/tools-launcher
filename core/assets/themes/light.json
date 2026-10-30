@@ -1,0 +1,22 @@
+{
+  "label": "Clair",
+  "scheme": "light",
+  "colors": {
+    "BG": "#f4f6fa",
+    "SURFACE": "#ffffff",
+    "SURFACE_2": "#eceff5",
+    "BORDER": "#d3d9e4",
+    "TEXT": "#1b2130",
+    "MUTED": "#5f6880",
+    "ACCENT": "#2f6fed",
+    "ACCENT_HOVER": "#4d85f2",
+    "ALT_ROW": "#f7f9fc",
+    "HOVER_ROW": "#e8edf7",
+    "SELECTION": "#cddcfb",
+    "SELECTION_STRONG": "#bcd0fa",
+    "WARN": "#b36b00",
+    "WARN_BG": "#fff1d6",
+    "DROP_HOVER": "#eef3ff",
+    "ON_ACCENT": "#ffffff"
+  }
+}

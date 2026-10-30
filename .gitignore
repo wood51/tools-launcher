@@ -1,0 +1,7 @@
+.venv/
+__pycache__/
+*.pyc
+**/data/
+dist/
+.install_tmp/
+.extensions_backup/
