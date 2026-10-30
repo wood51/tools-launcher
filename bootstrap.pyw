@@ -21,15 +21,25 @@ RUNTIME_PYTHON = ROOT / "runtime" / "python.exe"
 #  Functions
 ###############################
 def venv_missing() -> bool:
-    return not PYTHONW.exists()
+    """Pas de venv, ou son Python ne démarre plus (un Python du Store mis à jour peut le casser)."""
+    if not PYTHONW.exists():
+        return True
+    try:
+        result = subprocess.run(
+            [str(PYTHON), "-c", "pass"], capture_output=True, timeout=60, creationflags=subprocess.CREATE_NO_WINDOW
+        )
+    except (OSError, subprocess.TimeoutExpired):
+        return True
+    return result.returncode != 0
 
 
 def setup(set_status) -> bool:
     if venv_missing():
-        set_status("Création de l'environnement (1/2)…")
+        repair = VENV.exists()
+        set_status("Réparation de l'environnement (1/2)…" if repair else "Création de l'environnement (1/2)…")
         python = RUNTIME_PYTHON if RUNTIME_PYTHON.exists() else Path(sys.executable).with_name("python.exe")
         subprocess.run(
-            [str(python), "-m", "venv", str(VENV)],
+            [str(python), "-m", "venv", *(["--clear"] if repair else []), str(VENV)],
             creationflags=subprocess.CREATE_NO_WINDOW,
         )
 
@@ -43,7 +53,7 @@ def setup(set_status) -> bool:
 ###############################
 #  Main
 ###############################
-if venv_missing() or deps_outdated():
+if venv_missing() or deps_outdated():  # `setup` revérifie : le venv n'est réparé que s'il est vraiment cassé
     if not run_with_splash("Préparation…", setup):
         ctypes.windll.user32.MessageBoxW(
             0,

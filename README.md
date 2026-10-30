@@ -11,22 +11,19 @@ Le lanceur lui-même ne fait presque rien : tout le reste est une **extension**,
 
 ## Installation
 
-Chaque [release](../../releases) propose deux zips :
+**Prérequis : Python 3.12 ou plus récent** (avec `venv` et `tkinter`, inclus par défaut). Le plus simple : installer **Python** depuis le **Microsoft Store** (« Python Install Manager »), sans droits administrateur.
 
-| Fichier | Contenu | Prérequis |
-|---|---|---|
-| `ToolsLauncher-X.Y.Z.zip` | Le lanceur seul (environ 120 Ko). | Python 3.12+ avec `venv` et `tkinter`, et accès à pip au premier lancement (PySide6, quelques dizaines de Mo). |
-| `ToolsLauncher-X.Y.Z-autonome.zip` | Le lanceur, un Python embarqué et les paquets hors ligne (environ 130 Mo). | Aucun : ni Python, ni réseau. |
+1. Téléchargez `ToolsLauncher-X.Y.Z.zip` depuis la dernière [release](../../releases) et dézippez-le dans un dossier **définitif** (le `.venv` créé au premier lancement n'est pas déplaçable).
+2. Lancez `Lancer Tools Launcher.cmd`. Une fenêtre « Préparation… » crée l'environnement et télécharge PySide6 (environ 80 Mo), une seule fois.
+3. L'icône apparaît dans la zone de notification (parfois sous la flèche ^). **Launcher > Catalogue… > Source…** ajoute vos sources. **Launcher > Paramètres…** règle le démarrage avec Windows, les raccourcis (bureau, menu Démarrer), les notifications et les plugins.
 
-1. Dézippez dans un dossier **définitif** (le `.venv` créé au premier lancement n'est pas déplaçable).
-2. Lancez `Lancer Tools Launcher.cmd`. Une fenêtre d'attente prépare l'environnement, une seule fois.
-3. L'icône apparaît dans la zone de notification. **Launcher > Catalogue… > Source…** ajoute vos sources. **Launcher > Paramètres…** règle le démarrage avec Windows, les notifications et les plugins.
+Si Python est mis à jour par le Store et que le lanceur ne démarre plus, relancez `Lancer Tools Launcher.cmd` : l'environnement se répare tout seul (réglages et extensions conservés).
 
-Vérifiez les fichiers téléchargés : `SHA256SUMS` donne leurs empreintes et `SHA256SUMS.sig` est sa signature.
+Vérifiez les fichiers téléchargés (après le premier lancement, le `.venv` contient ce qu'il faut) : `SHA256SUMS` donne leurs empreintes et `SHA256SUMS.sig` est sa signature.
 
 ```
-python scripts/sign.py verify SHA256SUMS
-python scripts/sign.py fingerprint
+.venv/Scripts/python.exe scripts/sign.py verify SHA256SUMS
+.venv/Scripts/python.exe scripts/sign.py fingerprint
 ```
 
 La seconde commande affiche l'empreinte de chaque clé de confiance. Comparez-la, **par un autre canal que ce dépôt**, à celle de l'auteur :

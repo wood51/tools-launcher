@@ -24,7 +24,7 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
-from core import startup
+from core import shortcuts, startup
 from core.api import send_message
 from core.config import get_section, set_section
 from core.paths import DATA_DIR, LOG_FILE, launcher_version
@@ -233,6 +233,13 @@ class SettingsWindow(QMainWindow):
         self.startup.setChecked(startup.is_enabled())
         self.startup.toggled.connect(self.toggle_startup)
         section.body.addWidget(self.startup)
+        self.shortcut_boxes = {}
+        for location, text in (("desktop", "Raccourci sur le bureau"), ("start_menu", "Raccourci dans le menu Démarrer")):
+            box = QCheckBox(text)
+            box.setChecked(shortcuts.is_enabled(location))
+            box.toggled.connect(lambda enabled, loc=location: self.toggle_shortcut(loc, enabled))
+            self.shortcut_boxes[location] = box
+            section.body.addWidget(box)
 
         row = QHBoxLayout()
         row.addStretch(1)
@@ -254,6 +261,16 @@ class SettingsWindow(QMainWindow):
             self.startup.blockSignals(True)  # remet la case dans l'état réel
             self.startup.setChecked(startup.is_enabled())
             self.startup.blockSignals(False)
+
+    def toggle_shortcut(self, location: str, enabled: bool) -> None:
+        try:
+            shortcuts.enable(location) if enabled else shortcuts.disable(location)
+        except (OSError, subprocess.SubprocessError) as e:
+            QMessageBox.warning(self, "Raccourci", f"Impossible de modifier le raccourci :\n{e}")
+            box = self.shortcut_boxes[location]
+            box.blockSignals(True)  # remet la case dans l'état réel
+            box.setChecked(shortcuts.is_enabled(location))
+            box.blockSignals(False)
 
     def open_log(self) -> None:
         try:

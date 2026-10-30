@@ -161,6 +161,7 @@ def sync_git(source: dict) -> Path:
     token = get_token(source)
     credentials = {"username": "token", "password": token} if token and remote else {}
     picked = {}
+    GIT_CACHE_DIR.mkdir(parents=True, exist_ok=True)  # dulwich ne crée pas les dossiers parents
     repo = Repo(str(folder)) if (folder / "HEAD").is_file() else Repo.init_bare(str(folder), mkdir=True)
     try:
 
