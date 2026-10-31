@@ -1,0 +1,10 @@
+{
+  "id": "foret",
+  "name": "Forêt",
+  "version": "1.0.0",
+  "author": "wood51",
+  "tooltip": "Thème sombre vert ardoise, accent vert tendre",
+  "theme": {
+    "file": "foret.json"
+  }
+}

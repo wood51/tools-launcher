@@ -1,0 +1,10 @@
+{
+  "id": "nord",
+  "name": "Nord",
+  "version": "1.0.0",
+  "author": "wood51",
+  "tooltip": "Thème sombre bleu glacé, accent bleu clair",
+  "theme": {
+    "file": "nord.json"
+  }
+}

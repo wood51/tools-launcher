@@ -1,0 +1,20 @@
+{
+  "label": "Forêt",
+  "scheme": "dark",
+  "colors": {
+    "BG": "#101a14",
+    "SURFACE": "#172419",
+    "SURFACE_2": "#1f3123",
+    "BORDER": "#2d4632",
+    "TEXT": "#e4efe5",
+    "MUTED": "#9bb9a0",
+    "ACCENT": "#5fb878",
+    "ACCENT_HOVER": "#7fcf94",
+    "ALT_ROW": "#142016",
+    "HOVER_ROW": "#25392a",
+    "SELECTION": "#2d6040",
+    "SELECTION_STRONG": "#347349",
+    "DROP_HOVER": "#14261a",
+    "ON_ACCENT": "#06220f"
+  }
+}

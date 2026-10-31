@@ -79,6 +79,8 @@ QComboBox, QLineEdit {
     selection-background-color: @SELECTION;
 }
 QComboBox:hover, QLineEdit:focus { border-color: @ACCENT; }
+QLineEdit[invalid="true"], QLineEdit[invalid="true"]:focus { border-color: @WARN; background: @WARN_BG; }
+QLabel#total { font-size: 14pt; font-weight: 600; }
 QComboBox::drop-down { border: none; width: 20px; }
 QComboBox QAbstractItemView {
     background: @SURFACE_2; border: 1px solid @BORDER; selection-background-color: @SELECTION;

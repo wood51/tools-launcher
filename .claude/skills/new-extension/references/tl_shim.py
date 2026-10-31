@@ -21,7 +21,7 @@ LOG_MAX_BYTES = 500_000
 COLORS = {
     "BG": "#0f1218", "SURFACE": "#171b24", "SURFACE_2": "#1e2330",
     "BORDER": "#2a3040", "TEXT": "#e6e9ef", "MUTED": "#8b93a7",
-    "ACCENT": "#4173d1", "ACCENT_HOVER": "#6a9dff", "ALT_ROW": "#1a1f2a",
+    "ACCENT": "#4173d1", "ACCENT_HOVER": "#5c8de6", "ALT_ROW": "#1a1f2a",
     "HOVER_ROW": "#232a3a", "SELECTION": "#25407a", "SELECTION_STRONG": "#2b4a8f",
     "WARN": "#f5a524", "WARN_BG": "#3a2f12", "DROP_HOVER": "#151c2c",
     "ON_ACCENT": "#ffffff",

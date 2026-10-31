@@ -4,7 +4,7 @@ import subprocess
 import sys
 
 import PySide6
-from PySide6.QtCore import QSize, Qt
+from PySide6.QtCore import QSize, Qt, QTimer
 from PySide6.QtGui import QGuiApplication, QIcon
 from PySide6.QtWidgets import (
     QApplication,
@@ -105,6 +105,7 @@ class SettingsWindow(QMainWindow):
         self.tabs.setObjectName("settingsTabs")
         self.tab_pages: list[QWidget] = []
         outer.addWidget(self.tabs)
+        self.tabs.currentChanged.connect(lambda _index: QTimer.singleShot(0, self.relayout_tool_list))
 
         self.build_general()
         self.build_tools()
@@ -112,6 +113,19 @@ class SettingsWindow(QMainWindow):
         self.build_notifications()
         self.resize(660, 100)
         self.fit_size()
+
+    def relayout_tool_list(self) -> None:
+        """Les widgets des lignes d'outils gardent une largeur périmée tant que la liste n'est pas remise en page."""
+        if hasattr(self, "tool_list"):
+            self.tool_list.doItemsLayout()
+
+    def showEvent(self, event) -> None:
+        super().showEvent(event)
+        QTimer.singleShot(0, self.relayout_tool_list)
+
+    def resizeEvent(self, event) -> None:
+        super().resizeEvent(event)
+        QTimer.singleShot(0, self.relayout_tool_list)
 
     def add_tab(self, label: str, section: "Section") -> None:
         """Un onglet par sujet : la carte perd son cadre et son titre (l'onglet les remplace)."""
@@ -250,7 +264,7 @@ class SettingsWindow(QMainWindow):
             item = QListWidgetItem()
             row = self.make_tool_row(tool, categories)
             row.setMinimumHeight(TOOL_ROW_HEIGHT)  # le sizeHint d'un widget pas encore stylé est trop petit
-            item.setSizeHint(QSize(row.sizeHint().width(), TOOL_ROW_HEIGHT))
+            item.setSizeHint(QSize(0, TOOL_ROW_HEIGHT))  # largeur : celle de la liste
             self.tool_list.addItem(item)
             self.tool_list.setItemWidget(item, row)
             self.tool_rows[tool["id"]] = item

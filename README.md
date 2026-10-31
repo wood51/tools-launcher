@@ -33,6 +33,16 @@ wood51 · wood51
   9ed2 b7bf b829 d8b3 4b9b 9e60 04d5 1363 8e33 d30b db92 2f45 02ac a69c 9aef bacb
 ```
 
+## Extensions fournies
+
+Quelques extensions de base sont installées avec le lanceur ; elles se mettent à jour comme les autres, depuis un catalogue.
+
+| Extension | Type | Rôle |
+|---|---|---|
+| **Fichier** | plugin + outil | Un menu de fichiers favoris, chacun ouvert avec l'application choisie (liste modifiable par glisser-déposer). |
+| **Centièmes ↔ heures** | outil | Convertit heures:minutes, minutes, heures décimales et centièmes d'heure (1 h = 100), avec un cumul de durées. |
+| **Nord**, **Papier**, **Forêt** | thèmes | Trois palettes en plus de Sombre et Clair (**Launcher > Thème**), aux contrastes vérifiés. |
+
 ## Comment ça marche
 
 ### Extensions

@@ -1,0 +1,10 @@
+{
+  "id": "papier",
+  "name": "Papier",
+  "version": "1.0.0",
+  "author": "wood51",
+  "tooltip": "Thème clair ton papier, accent terre cuite",
+  "theme": {
+    "file": "papier.json"
+  }
+}

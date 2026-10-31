@@ -1,0 +1,20 @@
+{
+  "label": "Nord",
+  "scheme": "dark",
+  "colors": {
+    "BG": "#2e3440",
+    "SURFACE": "#3b4252",
+    "SURFACE_2": "#434c5e",
+    "BORDER": "#4c566a",
+    "TEXT": "#eceff4",
+    "MUTED": "#b4bfd2",
+    "ACCENT": "#88c0d0",
+    "ACCENT_HOVER": "#a3d4e2",
+    "ALT_ROW": "#353b49",
+    "HOVER_ROW": "#4c566a",
+    "SELECTION": "#4f6b82",
+    "SELECTION_STRONG": "#5a7b94",
+    "DROP_HOVER": "#364050",
+    "ON_ACCENT": "#2e3440"
+  }
+}
