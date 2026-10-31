@@ -10,6 +10,7 @@ import json
 import os
 import re
 import sys
+import tempfile
 import threading
 from datetime import datetime
 from pathlib import Path
@@ -45,7 +46,45 @@ QProgressBar { background: @SURFACE_2; border: none; border-radius: 2px; max-hei
 QProgressBar::chunk { background: @ACCENT; border-radius: 2px; }
 QMessageBox, QDialog { background: @SURFACE; }
 QToolTip { background: @SURFACE_2; color: @TEXT; border: 1px solid @BORDER; padding: 4px; }
+QCheckBox, QRadioButton { spacing: 8px; }
+QCheckBox::indicator, QRadioButton::indicator { width: 18px; height: 18px; border: 2px solid @MUTED; background: @SURFACE_2; }
+QCheckBox::indicator { border-radius: 5px; }
+QRadioButton::indicator { border-radius: 11px; }
+QCheckBox::indicator:hover, QRadioButton::indicator:hover { border-color: @ACCENT_HOVER; }
+QCheckBox::indicator:checked { background: @ACCENT; border-color: @ACCENT; image: url("@ICON_CHECK"); }
+QRadioButton::indicator:checked { background: @ACCENT; border-color: @ACCENT; image: url("@ICON_RADIO"); }
+QCheckBox::indicator:checked:hover, QRadioButton::indicator:checked:hover { background: @ACCENT_HOVER; border-color: @ACCENT_HOVER; }
+QCheckBox::indicator:disabled, QRadioButton::indicator:disabled { border-color: @BORDER; background: @SURFACE; }
 """
+
+# Qt ne recolore pas une image : coche et point sont écrits une fois dans le dossier temporaire
+INDICATOR_SVGS = {
+    "ICON_CHECK": '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18"><path d="M4.5 9.5l3 3 6-7" fill="none" '
+    'stroke="{color}" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    "ICON_RADIO": '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18"><circle cx="9" cy="9" r="3.6" fill="{color}"/></svg>',
+}
+
+
+def indicator_icon(kind: str, color: str) -> str:
+    path = Path(tempfile.gettempdir()) / "tl_shim_icons" / f"{kind.lower()}_{color.lstrip('#')}.svg"
+    try:
+        if not path.is_file():
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text(INDICATOR_SVGS[kind].format(color=color), encoding="utf-8")
+    except OSError:
+        return ""
+    return path.as_posix()
+
+
+def render_stylesheet() -> str:
+    """STYLESHEET avec les jetons @NOM remplacés (jetons entiers : @ACCENT ne touche pas @ACCENT_HOVER)."""
+    def token(match) -> str:
+        key = match.group(1)
+        if key in INDICATOR_SVGS:
+            return indicator_icon(key, COLORS["ON_ACCENT"])
+        return COLORS.get(key, match.group(0))
+
+    return re.sub(r"@([A-Z][A-Z0-9_]*)", token, STYLESHEET)
 
 
 def write_json_atomic(path: Path, data: object) -> None:
@@ -129,8 +168,7 @@ class ExtensionAPI:
         from PySide6.QtCore import Qt
 
         app.styleHints().setColorScheme(Qt.ColorScheme.Dark)
-        # jetons entiers : @ACCENT ne doit pas toucher @ACCENT_HOVER
-        app.setStyleSheet(re.sub(r"@([A-Z][A-Z0-9_]*)",lambda m: COLORS.get(m.group(1), m.group(0)), STYLESHEET))
+        app.setStyleSheet(render_stylesheet())
 
     def launch_tool(self, extension_id: str) -> None:
         self.log(f"launch_tool indisponible hors du lanceur : {extension_id}")

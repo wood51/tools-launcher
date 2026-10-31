@@ -216,10 +216,34 @@ def set_tool_identity(app) -> None:
 
 #### Feuille de style ####
 
+ICONS_CACHE_DIR = DATA_DIR / "theme_icons"
+INDICATOR_SVGS = {
+    "ICON_CHECK": '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18"><path d="M4.5 9.5l3 3 6-7" fill="none" '
+    'stroke="{color}" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    "ICON_RADIO": '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18"><circle cx="9" cy="9" r="3.6" fill="{color}"/></svg>',
+}
+
+
+def indicator_icon(kind: str, color: str) -> str:
+    """Chemin (barres obliques) d'une petite image de case à cocher ou de bouton radio, de la couleur du thème.
+    Qt ne sait pas recolorer une image : on l'écrit une fois par couleur dans core/data/theme_icons/."""
+    path = ICONS_CACHE_DIR / f"{kind.lower()}_{color.lstrip('#')}.svg"
+    try:
+        if not path.is_file():
+            ICONS_CACHE_DIR.mkdir(parents=True, exist_ok=True)
+            path.write_text(INDICATOR_SVGS[kind].format(color=color), encoding="utf-8")
+    except OSError:
+        return ""
+    return path.as_posix()
+
+
 def render_stylesheet(colors: dict, extra_qss: str = "") -> str:
-    """theme.qss avec les jetons @NOM remplacés par `colors`, suivi de `extra_qss`."""
+    """theme.qss avec les jetons @NOM remplacés par `colors`, suivi de `extra_qss`.
+    `@ICON_CHECK` et `@ICON_RADIO` donnent le chemin d'une image de la couleur `ON_ACCENT`."""
     def token(match) -> str:
         key = match.group(1)
+        if key in INDICATOR_SVGS:
+            return indicator_icon(key, colors.get("ON_ACCENT", DEFAULT_COLORS["ON_ACCENT"]))
         if key not in colors:
             print(f"jeton inconnu dans la feuille de style : @{key}")
             return match.group(0)

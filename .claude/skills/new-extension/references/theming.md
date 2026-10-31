@@ -22,7 +22,8 @@ Identifiants fournis par la feuille commune :
 | `QPushButton#toggle` | bouton à bascule (`checkable`), teinte d'avertissement une fois coché |
 | `QPushButton#link` | bouton en forme de lien |
 | `QFrame#drop` + propriété `hover="true"` | zone de glisser-déposer (bordure pointillée, accent au survol) |
-| `QTableWidget`, `QHeaderView`, `QProgressBar` (fine), `QScrollBar`, `QComboBox`, `QLineEdit`, `QGroupBox`, `QTabWidget`, `QToolTip`, `QMenu`, `QMessageBox`, `QDialog` | déjà stylés |
+| `QTableWidget`, `QHeaderView`, `QProgressBar` (fine), `QScrollBar`, `QComboBox`, `QLineEdit`, `QCheckBox`, `QRadioButton`, `QGroupBox`, `QTabWidget`, `QToolTip`, `QMenu`, `QMessageBox`, `QDialog` | déjà stylés |
+| `QCheckBox`, `QRadioButton` | cadre `MUTED` bien visible ; coché : fond `ACCENT` avec coche ou point `ON_ACCENT` (images générées à la couleur du thème : rien à faire) |
 
 Police : Segoe UI 10 pt. Pour un style absent de la liste, ajouter une règle locale avec `widget.setStyleSheet(...)` **en n'utilisant que des couleurs lues du thème**, ou un fichier `.qss` d'un thème ; sinon accepter le style par défaut.
 

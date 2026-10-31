@@ -53,6 +53,8 @@ def load_manifest(manifest: Path) -> dict:
         check_text(data, "tooltip")
     if "author" in data:  # simple mention ; le signataire du paquet fait foi, pas ce champ
         check_text(data, "author")
+    if "category" in data:  # rangement par défaut dans le menu Outils ; l'utilisateur peut le changer
+        check_text(data, "category")
 
     present = [block for block in BLOCKS if block in data]
     if not present:
@@ -96,12 +98,13 @@ def discover_extensions() -> list[dict]:
 
 
 def discover_tools() -> list[dict]:
-    """Les extensions qui ont un bloc `tool`, à plat : id, name, tooltip, entry, icon, folder."""
+    """Les extensions qui ont un bloc `tool`, à plat : id, name, tooltip, category, entry, icon, folder."""
     return [
         {
             "id": ext["id"],
             "name": ext["tool"].get("name") or ext["name"],
             "tooltip": ext.get("tooltip", ""),
+            "category": ext.get("category", "").strip(),
             "entry": ext["tool"]["entry"],
             "icon": ext["tool"].get("icon"),
             "multiple": ext["tool"].get("multiple", False),

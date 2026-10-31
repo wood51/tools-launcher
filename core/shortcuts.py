@@ -1,4 +1,4 @@
-"""Raccourcis Windows du lanceur : démarrage avec Windows, bureau, menu Démarrer.
+"""Raccourcis Windows du lanceur : démarrage avec Windows et bureau.
 
 Stdlib seulement. Un raccourci `Tools Launcher.lnk` vise `Lancer Tools Launcher.cmd` (réduit) : ce fichier lance
 `bootstrap.pyw` avec le Python du système, ce qui permet de réparer un venv cassé. Le raccourci est créé par
@@ -17,7 +17,6 @@ from core.paths import LAUNCHER_ICON, PYTHONW, ROOT
 
 SHORTCUT_NAME = "Tools Launcher.lnk"
 FOLDERID_DESKTOP = "B4BFCC3A-DB2C-424C-B029-7FE99A87C641"
-FOLDERID_PROGRAMS = "A77F5D77-2E2B-44C3-A6A2-ABA601054A51"
 SCRIPT = """
 $ErrorActionPreference = 'Stop'
 $shortcut = (New-Object -ComObject WScript.Shell).CreateShortcut($env:TL_LINK)
@@ -58,7 +57,6 @@ def startup_dir() -> Path:
 LOCATIONS = {
     "startup": startup_dir,
     "desktop": lambda: _known_folder(FOLDERID_DESKTOP),
-    "start_menu": lambda: _known_folder(FOLDERID_PROGRAMS),
 }
 
 

@@ -23,7 +23,7 @@ Noms de dossiers, fichiers et variables en anglais ; textes affichés en frança
 }
 ```
 
-- **Optionnels** : `tooltip`, `author` (mention affichée sur la carte du Catalogue).
+- **Optionnels** : `tooltip`, `author` (mention affichée sur la carte du Catalogue), `category` (rangement proposé dans le menu Outils, par exemple « Bureau » ; l'utilisateur peut le changer, mettre des outils en favoris et activer le regroupement par catégorie dans Paramètres > Outils).
 - **Obligatoires** : `id` (égal au nom du dossier ; minuscules, chiffres, `_`, `-`), `name`, `version` (`1.2.3`), et au moins un bloc `tool`, `plugin` ou `theme`.
 - **Blocs** : `tool` : `entry` obligatoire, `name` (libellé du menu Outils, sinon le `name` de l'extension), `icon` et `multiple` (`true` si l'outil doit pouvoir s'ouvrir plusieurs fois ; par défaut, relancer un outil déjà ouvert ramène sa fenêtre au premier plan) optionnels. `plugin` : `entry`. `theme` : `file`.
 - Les chemins (`entry`, `file`, `icon`) sont relatifs au dossier de l'extension et ne peuvent pas en sortir. `entry` et `file` doivent exister.
@@ -158,7 +158,7 @@ Règles :
 - Un plugin ne modifie jamais `core/launcher.pyw` : tout passe par `api`.
 - Une exception dans `register` ou dans un callback est attrapée et journalisée ; le lanceur continue.
 - Ne pas bloquer : pas de traitement long dans un callback (lancer un outil ou un `subprocess` à la place).
-- Activer ou désactiver : **Launcher > Paramètres… > Plugins** (mémorisé dans `core/data/config.json`), effet au redémarrage du lanceur (le bouton « Redémarrer le lanceur » est dans la fenêtre).
+- Activer ou désactiver : **Launcher > Paramètres > Plugins** (mémorisé dans `core/data/config.json`), effet au redémarrage du lanceur (le bouton « Redémarrer le lanceur » est dans la fenêtre).
 - Un plugin est chargé comme un paquet : `from .autre import ...` fonctionne, `import autre` non.
 
 ---

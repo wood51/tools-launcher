@@ -1,7 +1,8 @@
 """Une seule fenêtre par outil : relancer un outil déjà ouvert ramène sa fenêtre au premier plan.
 
 Chaque outil écoute sur un tube nommé local (`tools-launcher-tool-<id>`). Une seconde instance
-s'y connecte, demande de passer au premier plan, puis s'arrête. Appelé par `core.theme.set_tool_identity`
+s'y connecte, demande de passer au premier plan, puis s'arrête. Le lanceur peut aussi y écrire `quit`
+(`request_quit`) pour fermer la fenêtre d'un outil quand il quitte lui-même. Appelé par `core.theme.set_tool_identity`
 (donc par tout outil lancé par le lanceur) ; un outil qui veut plusieurs fenêtres le déclare
 dans son manifeste : `"tool": { "multiple": true }`.
 """
@@ -34,9 +35,34 @@ class _Listener(QObject):
 
     def _on_connection(self) -> None:
         while (socket := self._server.nextPendingConnection()) is not None:
-            socket.disconnected.connect(socket.deleteLater)
-            socket.close()
-        QTimer.singleShot(0, lambda: raise_windows(self._app))
+            socket.setProperty("quit", False)
+            socket.readyRead.connect(lambda s=socket: self._read(s))
+            socket.disconnected.connect(lambda s=socket: self._finished(s))
+
+    def _read(self, socket: QLocalSocket) -> None:
+        if bytes(socket.readAll()).strip() == b"quit":
+            socket.setProperty("quit", True)
+            QTimer.singleShot(0, self._app.quit)
+
+    def _finished(self, socket: QLocalSocket) -> None:
+        self._read(socket)
+        if not socket.property("quit"):  # simple connexion d'une seconde instance : montrer la fenêtre
+            QTimer.singleShot(0, lambda: raise_windows(self._app))
+        socket.deleteLater()
+
+
+def request_quit(extension_id: str, timeout_ms: int = 300) -> bool:
+    """Demande à l'outil `extension_id` de se fermer. False s'il ne tourne pas."""
+    socket = QLocalSocket()
+    socket.connectToServer(NAME_PREFIX + extension_id)
+    if not socket.waitForConnected(timeout_ms):
+        return False
+    socket.write(b"quit\n")
+    socket.waitForBytesWritten(timeout_ms)
+    socket.disconnectFromServer()
+    if socket.state() != QLocalSocket.UnconnectedState:
+        socket.waitForDisconnected(timeout_ms)
+    return True
 
 
 def ensure_single_instance(app, extension_id: str) -> None:

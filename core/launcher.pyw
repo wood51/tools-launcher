@@ -5,17 +5,20 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from core.paths import CORE_DIR, ICONS_DIR, PYTHONW
+from core.paths import CORE_APPS, CORE_DIR, ICONS_DIR, PYTHONW
+from core.api import send_message
 from core.catalog.index import find_updates
 from PySide6.QtCore import QObject, Qt, QTimer, Signal
-from PySide6.QtGui import QActionGroup, QIcon
+from PySide6.QtGui import QAction, QActionGroup, QIcon
 from PySide6.QtWidgets import QApplication, QSystemTrayIcon, QMenu
 from core.theme import apply_theme, discover_themes, get_theme, set_theme
 from core.registry import discover_tools, launch_tool
 from core.channel import ChannelServer
-from core.menus import LeftSubMenu
+from core.menus import LeftSubMenu, favorite_action, fill_favorites, fill_tools_menu
+from core.tools_menu import load_settings as load_tools_settings, organize
 from core.plugin_api import PluginHost
 from core.plugin_loader import load_plugins
+from core.single import request_quit
 
 
 def tool_icon(tool: dict) -> QIcon:
@@ -28,16 +31,28 @@ def tool_icon(tool: dict) -> QIcon:
     return DEFAULT_TOOL_ICON
 
 
+def add_tool_action(target: QMenu, tool: dict) -> None:
+    action = target.addAction(tool_icon(tool), tool["name"])
+    action.setToolTip(tool.get("tooltip", ""))
+    action.triggered.connect(lambda checked=False, t=tool: run_tool(t))
+
+
+def tool_layout():
+    return organize(discover_tools(), load_tools_settings())
+
+
 def rebuild_tools_menu() -> None:
-    tools_menu.clear()
-    tools = discover_tools()
-    if not tools:
-        tools_menu.addAction("(aucun outil)").setEnabled(False)
-        return
-    for tool in tools:
-        action = tools_menu.addAction(tool_icon(tool), tool["name"])
-        action.setToolTip(tool.get("tooltip", ""))
-        action.triggered.connect(lambda checked=False, t=tool: run_tool(t))
+    fill_tools_menu(tools_menu, tool_layout(), add_tool_action)
+
+
+def rebuild_favorites() -> None:
+    """Favoris en haut du menu principal ; reconstruits à chaque ouverture (réglages et outils peuvent changer)."""
+    global favorite_actions
+
+    def make_action(tool: dict) -> QAction:
+        return favorite_action(menu, tool, tool_icon(tool), lambda t=tool: run_tool(t))
+
+    favorite_actions = fill_favorites(menu, tools_menu.menuAction(), tool_layout().favorites, favorite_actions, make_action)
 
 
 def rebuild_theme_menu() -> None:
@@ -120,6 +135,12 @@ def open_settings() -> None:
     run_tool({"id": "settings", "name": "Paramètres", "folder": CORE_DIR / "settings", "entry": "main.pyw"})
 
 
+def close_core_windows() -> None:
+    """Ferme les fenêtres du noyau (Catalogue, Paramètres) restées ouvertes quand le lanceur s'arrête."""
+    for extension_id in CORE_APPS:
+        request_quit(extension_id)
+
+
 def restart_launcher() -> None:
     """Un processus relais relance le lanceur une fois celui-ci arrêté (le verrou est alors libre)."""
     launcher = str(CORE_DIR / "launcher.pyw")
@@ -144,6 +165,9 @@ tray.setToolTip("Mes outils")
 menu = QMenu()
 menu.setLayoutDirection(Qt.RightToLeft)  # flèches des sous-menus vers la gauche
 
+favorite_actions: list[QAction] = []
+menu.aboutToShow.connect(rebuild_favorites)
+
 tools_menu = LeftSubMenu("Outils", menu)
 menu.addMenu(tools_menu)
 tools_menu.setToolTipsVisible(True)
@@ -157,8 +181,8 @@ launcher_menu.addMenu(theme_menu)
 theme_group = QActionGroup(theme_menu)
 theme_menu.aboutToShow.connect(rebuild_theme_menu)
 
-launcher_menu.addAction("Catalogue…", open_catalog)
-launcher_menu.addAction("Paramètres…", open_settings)
+launcher_menu.addAction("Catalogue", open_catalog)
+launcher_menu.addAction("Paramètres", open_settings)
 
 menu.addSeparator()
 menu.addAction("Quitter", app.quit)
@@ -167,7 +191,15 @@ host = PluginHost(
     tray, menu, launcher_menu.menuAction()
 )  # les plugins s'insèrent avant Launcher
 channel = ChannelServer(host, on_restart=restart_launcher)
-if not channel.start():  # le nom est pris : un autre lanceur tourne déjà
+if not channel.start():  # un autre lanceur tourne déjà : le dire (clic sur un raccourci, relance du .cmd)
+    send_message(
+        {
+            "cmd": "notify",
+            "ext": "launcher",
+            "title": "Tools Launcher",
+            "message": "Déjà lancé : l'icône est dans la zone de notification (sous la flèche ^ si elle est cachée).",
+        }
+    )
     sys.exit(0)
 
 load_plugins(host)
@@ -185,5 +217,6 @@ update_timer.timeout.connect(update_checker.check)
 update_timer.start(60 * 60 * 1000)  # toutes les heures
 
 app.aboutToQuit.connect(host.run_quit)
+app.aboutToQuit.connect(close_core_windows)  # Catalogue et Paramètres ne survivent pas au lanceur
 
 sys.exit(app.exec())

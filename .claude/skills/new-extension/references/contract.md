@@ -18,7 +18,7 @@ extensions/<id>/        UNE extension par dossier : c'est là qu'on travaille
   data/                 données de l'extension (non versionné, jamais écrasé)
 ```
 
-Installer une extension = **glisser son zip ou son dossier dans l'outil Catalogue** (menu Launcher > Catalogue…), qui le contrôle, résume son contenu et l'installe après confirmation (un zip sans `SIGNATURE.json` s'installe avec l'avertissement « Provenance NON vérifiée » ; la signature est ajoutée par l'extension `publisher`, jamais à la main ; ou, à la main, déposer le dossier dans `extensions/`). Un **outil** apparaît au prochain ouverture du menu Outils ; un **plugin** est chargé au prochain démarrage du lanceur ; un **thème** apparaît au prochain ouverture du menu Thème.
+Installer une extension = **glisser son zip ou son dossier dans l'outil Catalogue** (menu Launcher > Catalogue), qui le contrôle, résume son contenu et l'installe après confirmation (un zip sans `SIGNATURE.json` s'installe avec l'avertissement « Provenance NON vérifiée » ; la signature est ajoutée par l'extension `publisher`, jamais à la main ; ou, à la main, déposer le dossier dans `extensions/`). Un **outil** apparaît au prochain ouverture du menu Outils ; un **plugin** est chargé au prochain démarrage du lanceur ; un **thème** apparaît au prochain ouverture du menu Thème.
 
 ## Les trois blocs
 
@@ -43,7 +43,7 @@ Une extension peut cumuler plusieurs blocs (ex. `files` : un plugin de menu et u
 ```
 
 - Obligatoires : `id` (égal au nom du dossier ; minuscules, chiffres, `_`, `-`, commence par une lettre ou un chiffre), `name`, `version` (`1.2.3`), et au moins un bloc.
-- `tooltip` optionnel (info-bulle du menu). `author` optionnel : simple mention affichée sur la carte du Catalogue (le signataire du zip fait foi, pas ce champ).
+- `tooltip` optionnel (info-bulle du menu). `category` optionnel : catégorie proposée pour l'outil dans le menu Outils (texte court, par exemple « Bureau » ; l'utilisateur peut la changer ; sans lui, l'outil reste à la racine). `author` optionnel : simple mention affichée sur la carte du Catalogue (le signataire du zip fait foi, pas ce champ).
 - Bloc `tool` : `entry` (obligatoire, script de l'outil), `name` (libellé du menu Outils ; sinon `name` de l'extension), `icon` (image ; sans elle, icône générique), `multiple` (booléen ; par défaut `false` : relancer un outil déjà ouvert ramène sa fenêtre au premier plan au lieu d'en ouvrir une seconde).
 - Bloc `plugin` : `entry` (obligatoire, défini `register(api)`).
 - Bloc `theme` : `file` (obligatoire, JSON des couleurs).

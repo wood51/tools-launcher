@@ -53,7 +53,7 @@ Résumer en quelques lignes : ce qui a été créé, comment le lancer (menu Out
 
 **Livraison** : un dossier `<id>/` ou, si un outil d'exécution de code est disponible, un zip `<id>.zip` (`extension.json` à la racine, sans `data/` ni `__pycache__`). Deux parcours :
 
-- **Version lanceur** (ou double) : le mainteneur **glisse le dossier ou le zip dans l'outil Catalogue** (menu Launcher > Catalogue…) : il y est contrôlé, résumé, puis installé après son OK (un zip non signé affiche « Provenance NON vérifiée » : normal, la signature se fait à la publication ; ne jamais créer ni copier de `SIGNATURE.json`). Aucune autre manipulation (pas de copie dans `extensions/`, pas de commande).
+- **Version lanceur** (ou double) : le mainteneur **glisse le dossier ou le zip dans l'outil Catalogue** (menu Launcher > Catalogue) : il y est contrôlé, résumé, puis installé après son OK (un zip non signé affiche « Provenance NON vérifiée » : normal, la signature se fait à la publication ; ne jamais créer ni copier de `SIGNATURE.json`). Aucune autre manipulation (pas de copie dans `extensions/`, pas de commande).
 - **Version autonome seule** : hors lanceur, il faut Python et `pip install -r requirements.txt` puis `python main.pyw`. Le dire clairement ; pour un collègue non technique, proposer plutôt la version lanceur.
 
 Si l'utilisateur corrige une façon de faire ou exprime une préférence durable, proposer de l'enregistrer (dans `CLAUDE.md` avec `task-observer:learn` si le dépôt est là, sinon dans `references/contract.md`) pour que la suite en tienne compte.

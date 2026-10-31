@@ -40,7 +40,7 @@ Un `from core.api import ...` échoue hors du lanceur (voir `standalone.md`).
 | `api.notify(title, message, level="info", on_click=None)` | comme ci-dessus, avec un rappel au clic (plugin seulement, et seulement pour le toast du lanceur) |
 | `api.set_badge(level)` | comme ci-dessus (le badge est partagé par id d'extension) |
 
-Les entrées s'insèrent avant le menu **Launcher**. `icon` : un `QIcon`. Toute exception dans `register` ou un callback est attrapée et journalisée ; le lanceur continue. Pas de rechargement à chaud : relancer le lanceur après une modification. Activer ou désactiver un plugin : Launcher > Paramètres… > Plugins (effet au redémarrage du lanceur).
+Les entrées s'insèrent avant le menu **Launcher**. `icon` : un `QIcon`. Toute exception dans `register` ou un callback est attrapée et journalisée ; le lanceur continue. Pas de rechargement à chaud : relancer le lanceur après une modification. Activer ou désactiver un plugin : Launcher > Paramètres > Plugins (effet au redémarrage du lanceur).
 
 Règles : rien de long dans un callback (lancer un outil ou un `subprocess`) ; un plugin ne touche jamais le code du lanceur ; la logique sans Qt va dans un module séparé, testable seul (voir `extensions/files/files.py` + `main.py`).
 
