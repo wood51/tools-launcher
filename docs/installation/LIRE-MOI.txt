@@ -1,0 +1,26 @@
+TOOLS LAUNCHER - BIENVENUE
+=========================
+
+Ouvrez Guide-installation-Windows.pdf.
+
+Pour découvrir le launcher : pages 1 et 2.
+Pour l'installer : commencez page 3.
+Python : page 4, SEULEMENT si le PC le demande.
+Pour retrouver l'icône et ajouter vos outils : page 5.
+Pour créer une extension avec un assistant : page 6.
+
+Si le launcher démarre, passez directement de la page 3 à la page 5.
+Vous n'avez pas à vérifier une version de Python.
+
+Le guide est disponible sur le site et inclus dans le ZIP.
+Téléchargez ToolsLauncher.zip, extrayez tout son contenu, puis ouvrez
+Lancer Tools Launcher.cmd dans le dossier extrait.
+
+Le fichier new-extension.zip est le skill pour créer des outils avec
+un assistant. Il n'est pas nécessaire pour utiliser le launcher.
+
+Au premier démarrage, le launcher est vide. Ajoutez ensuite les outils
+dont vous avez besoin depuis son Catalogue.
+
+Site officiel et téléchargement :
+https://wood51.github.io/tools-launcher/

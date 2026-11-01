@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Tools Launcher : vos outils Windows dans un menu, un catalogue pour les installer, des skills pour en créer avec un assistant.">
+  <meta name="theme-color" content="#f6f7f4">
+  <title>Tools Launcher — Vos outils, à portée de clic.</title>
+  <link rel="icon" href="assets/launcher.png" type="image/png">
+  <link rel="stylesheet" href="styles.css">
+  <script src="main.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#contenu">Aller au contenu</a>
+<header class="header wrap">
+  <a class="brand" href="#" aria-label="Tools Launcher, accueil"><img src="assets/launcher.png" alt="" width="34" height="34"><span>Tools Launcher</span></a>
+  <nav aria-label="Navigation principale"><a href="#decouvrir">Découvrir</a><a href="#installer">Installer</a><a href="#creer">Créer un outil</a><a class="nav-guide" href="Guide-installation-Windows.pdf">Le guide <span aria-hidden="true">↗</span></a></nav>
+</header>
+<main id="contenu">
+  <section class="hero wrap" aria-labelledby="titre">
+    <div class="hero-copy">
+      <p class="eyebrow"><span class="status-dot"></span> Votre atelier d’outils Windows</p>
+      <h1 id="titre">Vos outils,<br>à portée<br>de <span>clic.</span></h1>
+      <p class="intro">Un petit menu près de l’horloge. Les outils que vous choisissez. Et la possibilité d’en créer d’autres, simplement en les décrivant.</p>
+      <div class="actions"><a class="button primary" href="#installer">Installer Tools Launcher <span aria-hidden="true">↓</span></a><a class="text-link" href="Guide-installation-Windows.pdf">Ouvrir le guide PDF <span aria-hidden="true">↗</span></a></div>
+      <p class="small-note">Windows 10 / 11 · Gratuit · Python seulement si nécessaire</p>
+    </div>
+    <div class="hero-art" aria-label="Aperçu des fenêtres du launcher">
+      <div class="art-orbit orbit-one"></div><div class="art-orbit orbit-two"></div>
+      <div class="window settings-window"><div class="window-bar"><img src="assets/launcher.png" alt="" width="17" height="17"><span>Paramètres</span><span class="window-controls" aria-hidden="true">— &nbsp; □ &nbsp; ×</span></div><img class="screenshot" src="assets/settings.png" alt="Les paramètres du launcher : démarrage Windows et raccourci Bureau." width="660" height="318"></div>
+      <div class="window menu-window"><div class="menu-heading"><img src="assets/launcher.png" alt="" width="24" height="24"><span>Un menu. Vos outils.</span></div><div class="menu-shots"><img src="assets/menu.png" alt="Menu principal : Outils, Launcher, Quitter."><img src="assets/launcher-menu.png" alt="Menu Launcher : Thème, Catalogue, Paramètres."></div></div>
+      <div class="art-label"><span class="color-squares" aria-hidden="true"><i></i><i></i><i></i><i></i></span> Discret au quotidien. Utile au bon moment.</div>
+    </div>
+  </section>
+
+  <section class="principle wrap" aria-label="Les trois idées du projet"><div><b>01</b><span>Retrouver ses outils</span></div><div><b>02</b><span>Ajouter ce qui est utile</span></div><div><b>03</b><span>Créer ce qui manque</span></div></section>
+
+  <section id="decouvrir" class="discover wrap section" aria-labelledby="titre-decouvrir">
+    <div class="section-heading"><p class="eyebrow">Le principe</p><h2 id="titre-decouvrir">Un launcher léger.<br>Un espace pour vos idées.</h2><p>Vous commencez avec une installation vide. Vous ajoutez ensuite les extensions qui répondent à vos besoins.</p></div>
+    <div class="features">
+      <article><span class="feature-number blue">01</span><div><h3>Vos outils dans un menu</h3><p>Ouvrez-les depuis l’icône près de l’horloge. Retrouvez vos favoris et rangez vos outils par catégorie.</p></div></article>
+      <article><span class="feature-number mint">02</span><div><h3>Un catalogue pour les ajouter</h3><p>Installez une extension en glissant son ZIP dans le Catalogue, ou ajoutez une source fournie par une personne de confiance.</p></div></article>
+      <article><span class="feature-number amber">03</span><div><h3>Des réglages à votre rythme</h3><p>Choisissez l’apparence Sombre ou Clair, le raccourci Bureau, le démarrage Windows et vos notifications.</p></div></article>
+      <article><span class="feature-number coral">04</span><div><h3>Des outils qui évoluent</h3><p>Le Catalogue signale les mises à jour disponibles. Vous choisissez quand les installer, en conservant les données de l’extension.</p></div></article>
+    </div>
+    <div class="catalogue-showcase"><div><p class="eyebrow">Une base volontairement vide</p><h3>Juste le nécessaire.<br>À vous de choisir la suite.</h3><p>Aucun outil, plugin ou thème supplémentaire n’est livré. Le Catalogue est le point de départ pour personnaliser votre installation.</p><a class="text-link" href="Guide-installation-Windows.pdf#page=5">Comment ajouter un outil <span aria-hidden="true">↗</span></a></div><div class="window"><div class="window-bar"><img src="assets/launcher.png" alt="" width="17" height="17"><span>Catalogue</span></div><img class="catalog-shot" src="assets/catalog.png" alt="Catalogue d’une installation vide, avec une zone pour glisser un ZIP." loading="lazy" width="868" height="640"></div></div>
+  </section>
+
+  <section id="installer" class="install section" aria-labelledby="titre-installer"><div class="wrap">
+    <div class="section-heading"><p class="eyebrow">Commencer simplement</p><h2 id="titre-installer">Trois gestes.<br>Votre launcher est installé.</h2><p>Aucune commande à saisir. Aucune connaissance en programmation nécessaire pour suivre le guide.</p></div>
+    <ol class="steps"><li><span>1</span><h3>Téléchargez</h3><p>Un bouton, un ZIP. Vous n’avez pas à choisir parmi des fichiers techniques.</p></li><li><span>2</span><h3>Extrayez</h3><p>Clic droit sur le ZIP, puis <strong>Extraire tout…</strong>. Gardez le dossier à un endroit définitif.</p></li><li><span>3</span><h3>Lancez</h3><p>Double-cliquez sur <strong>Lancer Tools Launcher.cmd</strong>. Installez Python seulement si le PC le demande.</p></li></ol>
+    <div class="download-panel"><div><h3>Installer la dernière version</h3><p id="release-status" aria-live="polite">Vérification de la nouvelle distribution…</p></div><div class="download-actions"><a class="button primary unavailable" id="download-launcher" aria-disabled="true" tabindex="-1">Télécharger Tools Launcher <span aria-hidden="true">↓</span></a><a class="text-link" href="Guide-installation-Windows.pdf">Lire le guide illustré <span aria-hidden="true">↗</span></a></div></div>
+    <p class="install-note"><strong>Python, si besoin.</strong> Si le launcher démarre, vous n’avez rien à installer en plus. Sinon, le guide vous accompagne sur la fiche française de Python dans le Microsoft Store.</p>
+    <noscript><p>Ouvrez <a href="https://github.com/wood51/tools-launcher/releases/latest">la page de la dernière version</a> ou consultez le guide PDF.</p></noscript>
+  </div></section>
+
+  <section id="creer" class="create wrap section" aria-labelledby="titre-creer">
+    <div class="section-heading"><p class="eyebrow">Et si votre outil n’existait pas encore ?</p><h2 id="titre-creer">Décrivez le besoin.<br>Construisez avec un assistant.</h2><p>Les skills donnent à Claude ou Codex les règles du projet pour vous aider à fabriquer une extension. Vous pouvez commencer sans savoir coder.</p></div>
+    <div class="creation-grid"><div><div class="conversation"><span class="prompt-label">Par exemple, vous pourriez demander…</span><p>« Je voudrais un outil pour classer mes fichiers et retrouver rapidement les dossiers dont j’ai besoin. »</p><button class="copy-button" id="copy-prompt" type="button">Copier cet exemple <span aria-hidden="true">↗</span></button><span id="copy-status" role="status"></span></div><ol class="creation-list"><li><strong>Décrivez votre idée.</strong> Le skill aide l’assistant à préciser les fonctionnalités.</li><li><strong>Essayez une première version.</strong> Vous expliquez ce qui vous convient et ce qui reste à ajuster.</li><li><strong>Installez le ZIP obtenu.</strong> Le Catalogue l’ajoute à votre launcher.</li></ol><a class="button secondary" href="Guide-installation-Windows.pdf#page=6">Créer mon premier outil <span aria-hidden="true">↗</span></a><a class="skill-download" id="download-skill" aria-disabled="true" tabindex="-1">Télécharger le skill de création</a></div>
+    <figure class="game-example"><div class="window"><div class="window-bar"><span class="example-dot"></span><span>Exemple d’extension · Game Radar</span></div><img src="assets/game-radar.png" alt="Game Radar : deux classements de jeux vidéo, des filtres et une fiche par jeu." loading="lazy" width="1100" height="750"></div><figcaption><b>Game Radar</b> a été créé par conversation : classements récents et rétro, boîtes et bandes-annonces. Un exemple d’outil à installer séparément.</figcaption></figure></div>
+    <aside class="learning"><span class="color-squares" aria-hidden="true"><i></i><i></i><i></i><i></i></span><div><h3>Envie de comprendre le code ?</h3><p>Vous pouvez aussi demander une explication, un petit exercice et enrichir votre carnet de snippets. Le mode apprentissage suit votre rythme.</p></div></aside>
+  </section>
+
+  <section class="faq wrap section" aria-labelledby="titre-faq"><div class="section-heading"><p class="eyebrow">Quelques repères</p><h2 id="titre-faq">Avant votre premier clic.</h2></div>
+    <details><summary>Faut-il installer Python avant de commencer ?</summary><p>Essayez d’abord de lancer Tools Launcher. Si le PC a déjà Python et que le launcher démarre, cette étape est inutile. Sinon, le guide indique comment l’installer depuis le Store, sans commande.</p></details>
+    <details><summary>Pourquoi le Catalogue est-il vide ?</summary><p>La nouvelle distribution démarre sans extension. Vous choisissez ensuite vos outils. Une source de catalogue peut vous être fournie, ou vous pouvez glisser directement le ZIP d’une extension dans le Catalogue.</p></details>
+    <details><summary>Est-ce que le skill est obligatoire ?</summary><p>Non. Il sert à créer ou modifier des outils avec un assistant. Pour utiliser les extensions existantes, vous avez seulement besoin du launcher.</p></details>
+    <details><summary>Comment savoir si une extension est fiable ?</summary><p>Installez uniquement les extensions d’une source ou d’une personne en qui vous avez confiance. Le Catalogue vérifie les signatures lorsqu’elles sont présentes et indique si la provenance n’est pas vérifiée.</p></details>
+  </section>
+</main>
+<footer class="footer wrap"><a class="brand" href="#"><img src="assets/launcher.png" alt="" width="28" height="28"><span>Tools Launcher</span></a><p>Vos outils. Vos usages. Vos idées.</p><div><a href="Guide-installation-Windows.pdf">Guide PDF</a><a href="https://github.com/wood51/tools-launcher">Code public</a><a href="https://github.com/wood51/tools-launcher/releases">Versions</a></div><small>Projet wood51 · Windows · Licence MIT<br>Captures réalisées avec les composants du launcher et des données de démonstration.</small></footer>
+</body>
+</html>
