@@ -1,9 +1,0 @@
-{
-  "id": "centiemes",
-  "name": "Centièmes ↔ heures",
-  "version": "1.0.0",
-  "author": "wood51",
-  "category": "Bureau",
-  "tooltip": "Convertit heures:minutes, minutes, heures décimales et centièmes d'heure ; cumule des durées",
-  "tool": { "entry": "main.pyw", "icon": "icon.svg" }
-}

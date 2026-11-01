@@ -1,11 +1,15 @@
 ---
 name: new-extension
-description: Crée ou modifie une extension d'Tools Launcher (outil, plugin ou thème), pour le lanceur ou en version autonome, après avoir fait préciser les fonctionnalités par un questionnaire et validé un résumé. Autonome : fonctionne avec ou sans le dépôt Tools Launcher. À utiliser quand l'utilisateur demande un nouvel outil, plugin ou thème, ou un changement dans une extension.
+description: >-
+  Crée ou modifie une extension Tools Launcher (outil, plugin ou thème), pour le
+  lanceur ou en version autonome, à partir du besoin de l'utilisateur. Fonctionne
+  avec ou sans le dépôt Tools Launcher et assure le suivi des sources pour une
+  reprise avec un autre assistant. À utiliser pour créer ou faire évoluer une extension.
 ---
 
 # Créer une extension Tools Launcher
 
-Quand ce skill est invoqué, l'utilisateur (le mainteneur du lanceur ou un collègue) délègue : **Claude écrit le code** (le mode mentorat éventuel de `CLAUDE.md` est suspendu pour cette demande). Les règles de nommage, de style et de sécurité sont dans `references/contract.md`.
+Quand ce skill est invoqué, l'utilisateur (le mainteneur du lanceur, un proche ou un collègue) délègue : **l'assistant écrit le code**. Un mode apprentissage reste possible sur demande, par petites étapes. Les règles de nommage, de style et de sécurité sont dans `references/contract.md`.
 
 ## 0. D'où je lis les règles
 
@@ -16,8 +20,9 @@ Ce skill est **autonome** : tout ce qu'il faut est dans `references/` (à côté
 - `references/skeletons.md` : squelettes outil, plugin, deux blocs, thème.
 - `references/theming.md` : thème, jetons de couleur, identifiants de style.
 - `references/standalone.md` et `references/tl_shim.py` : version autonome d'un outil.
+- `references/project-workflow.md` : reprise entre assistants, suivi `PROJECT.md`, versions et capitalisation. À lire pour une création ou une reprise ; garder le suivi proportionné à l'outil.
 
-Si le dépôt Tools Launcher est accessible (dossiers `core/` et `extensions/` présents), lire en plus ses fichiers actuels (`README.md`, `docs/EXTENSIONS.md`, docstrings de `core/api.py` et `core/plugin_api.py`) et regarder une extension proche dans `extensions/` pour son style. **En cas de différence, le dépôt fait foi** ; le signaler au mainteneur pour que `references/` soit remis à jour.
+Si le dépôt Tools Launcher est accessible (dossiers `core/` et `extensions/` présents), lire en plus ses instructions d'entrée, `docs/WORKFLOW.md` et `docs/STATUS.md` s'ils existent, puis les fichiers actuels utiles (`README.md`, `docs/EXTENSIONS.md`, docstrings de `core/api.py` et `core/plugin_api.py`) et une extension proche pour son style. **En cas de différence, le dépôt fait foi** ; corriger les références dans le cadre d'un travail autorisé sur le skill, sinon signaler l'écart au mainteneur. Sans le dépôt, les références livrées restent suffisantes.
 
 ## 1. Préciser les fonctionnalités
 
@@ -49,11 +54,11 @@ Relire le code écrit pour la sécurité et la stabilité : chemins, `subprocess
 
 ## 4. Terminer
 
-Résumer en quelques lignes : ce qui a été créé, comment le lancer (menu Outils ; relancer le lanceur pour un plugin ; `python main.pyw` en autonome), ce qui n'est pas vérifié. Ne pas pousser sans demande.
+Mettre à jour le suivi court `PROJECT.md` dans les sources, suivant `references/project-workflow.md`. Résumer en quelques lignes : ce qui a été créé, comment le lancer (menu Outils ; relancer le lanceur pour un plugin ; `python main.pyw` en autonome), ce qui n'est pas vérifié et la prochaine étape. Ne pas commiter ni pousser sans demande. Préciser si le travail reste uniquement local.
 
-**Livraison** : un dossier `<id>/` ou, si un outil d'exécution de code est disponible, un zip `<id>.zip` (`extension.json` à la racine, sans `data/` ni `__pycache__`). Deux parcours :
+**Livraison** : un dossier `<id>/` ou, si un outil d'exécution de code est disponible, un zip `<id>.zip` (`extension.json` à la racine, sans `data/` ni `__pycache__`, notes `PROJECT.md`, instructions d'assistants ou tests). Garder le suivi dans les sources, hors du paquet livré. Deux parcours :
 
 - **Version lanceur** (ou double) : le mainteneur **glisse le dossier ou le zip dans l'outil Catalogue** (menu Launcher > Catalogue) : il y est contrôlé, résumé, puis installé après son OK (un zip non signé affiche « Provenance NON vérifiée » : normal, la signature se fait à la publication ; ne jamais créer ni copier de `SIGNATURE.json`). Aucune autre manipulation (pas de copie dans `extensions/`, pas de commande).
 - **Version autonome seule** : hors lanceur, il faut Python et `pip install -r requirements.txt` puis `python main.pyw`. Le dire clairement ; pour un collègue non technique, proposer plutôt la version lanceur.
 
-Si l'utilisateur corrige une façon de faire ou exprime une préférence durable, proposer de l'enregistrer (dans `CLAUDE.md` avec `task-observer:learn` si le dépôt est là, sinon dans `references/contract.md`) pour que la suite en tienne compte.
+Si l'utilisateur précise un choix durable pour son outil, le conserver dans `PROJECT.md`. Capitaliser une leçon réutilisable dans le carnet ou les règles communes du projet, sans dépendre d'un plugin propre à un assistant. Une modification du skill installé ou une publication reste une action distincte à autoriser.

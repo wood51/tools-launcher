@@ -134,7 +134,8 @@ class CatalogWindow(QMainWindow):
         sources = [s for s in load_sources() if s.get("enabled", True)]
         self.entries = {}
         if not sources:
-            self.source_label.setText("Aucune source active : seuls les extensions installées et le glisser-déposer sont disponibles.")
+            self.source_label.setText("Aucune source configurée")
+            self.source_label.setToolTip("Ajoutez une source ou glissez le ZIP d'une extension dans cette fenêtre.")
         else:
             QApplication.setOverrideCursor(Qt.WaitCursor)
             try:

@@ -11,9 +11,11 @@ Le lanceur lui-même ne fait presque rien : tout le reste est une **extension**,
 
 ## Installation
 
-**Prérequis : Python 3.12 ou plus récent** (avec `venv` et `tkinter`, inclus par défaut). Le plus simple : installer **Python** depuis le **Microsoft Store** (« Python Install Manager »), sans droits administrateur.
+Commencez par le [guide PDF](docs/installation/Guide-installation-Windows.pdf) ou le [LIRE-MOI](docs/installation/LIRE-MOI.txt), disponibles séparément sur la page de release et dans le ZIP. Présentation pages 1–2 ; installation à partir de la page 3.
 
-1. Téléchargez `ToolsLauncher-X.Y.Z.zip` depuis la dernière [release](../../releases) et dézippez-le dans un dossier **définitif** (le `.venv` créé au premier lancement n'est pas déplaçable).
+**Essayez d'abord de lancer l'application.** Python est à installer seulement si le PC le demande ou ouvre le Microsoft Store. Dans ce cas, installez **Python 3.13**, publié par **Python Software Foundation**, depuis le [Microsoft Store](https://apps.microsoft.com/detail/9pnrbtzxmb4z?hl=fr-FR&gl=FR), puis relancez le même fichier. Si le launcher démarre, cette étape est inutile. Aucune commande ni vérification de version n'est demandée dans le guide.
+
+1. Téléchargez `ToolsLauncher.zip` depuis le [site officiel](https://wood51.github.io/tools-launcher/#installer) et dézippez-le dans un dossier **définitif** (le `.venv` créé au premier lancement n'est pas déplaçable).
 2. Lancez `Lancer Tools Launcher.cmd`. Une fenêtre « Préparation… » crée l'environnement et télécharge PySide6 (environ 80 Mo), une seule fois.
 3. L'icône apparaît dans la zone de notification (parfois sous la flèche ^). **Launcher > Catalogue > Source…** ajoute vos sources. **Launcher > Paramètres** règle les favoris et les catégories des outils (favoris en haut du menu de l'icône),  le démarrage avec Windows, le raccourci du bureau, les notifications et les plugins.
 
@@ -33,15 +35,11 @@ wood51 · wood51
   9ed2 b7bf b829 d8b3 4b9b 9e60 04d5 1363 8e33 d30b db92 2f45 02ac a69c 9aef bacb
 ```
 
-## Extensions fournies
+## Installation vierge
 
-Quelques extensions de base sont installées avec le lanceur ; elles se mettent à jour comme les autres, depuis un catalogue.
+Le launcher est livré **sans extension, plugin ni thème supplémentaire**. Les apparences Sombre et Clair font partie du noyau. Le menu Outils et le Catalogue sont initialement vides ; les extensions s'ajoutent ensuite selon vos besoins.
 
-| Extension | Type | Rôle |
-|---|---|---|
-| **Fichier** | plugin + outil | Un menu de fichiers favoris, chacun ouvert avec l'application choisie (liste modifiable par glisser-déposer). |
-| **Centièmes ↔ heures** | outil | Convertit heures:minutes, minutes, heures décimales et centièmes d'heure (1 h = 100), avec un cumul de durées. |
-| **Nord**, **Papier**, **Forêt** | thèmes | Trois palettes en plus de Sombre et Clair (**Launcher > Thème**), aux contrastes vérifiés. |
+Depuis la version **1.3.0**, le ZIP est vierge et contient le guide PDF et le LIRE-MOI. Ceux-ci sont aussi disponibles séparément. La release 1.2.0 conserve son contenu historique.
 
 ## Comment ça marche
 

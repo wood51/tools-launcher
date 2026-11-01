@@ -5,3 +5,10 @@ __pycache__/
 dist/
 .install_tmp/
 .extensions_backup/
+/projects/**/*.zip
+/projects/**/outputs/
+/worktrees/
+/.workspace/
+/tmp/
+/output/
+/.playwright-cli/
