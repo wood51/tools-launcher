@@ -8,13 +8,13 @@
   <title>Tools Launcher — Vos outils, à portée de clic.</title>
   <link rel="icon" href="assets/launcher.png" type="image/png">
   <link rel="stylesheet" href="styles.css">
-  <script src="main.js?v=2" defer></script>
+  <script src="main.js?v=3" defer></script>
 </head>
 <body>
 <a class="skip" href="#contenu">Aller au contenu</a>
 <header class="header wrap">
   <a class="brand" href="#" aria-label="Tools Launcher, accueil"><img src="assets/launcher.png" alt="" width="34" height="34"><span>Tools Launcher</span></a>
-  <nav aria-label="Navigation principale"><a href="#decouvrir">Découvrir</a><a href="#installer">Installer</a><a href="#creer">Créer un outil</a><a class="nav-guide" href="Guide-installation-Windows.pdf">Le guide <span aria-hidden="true">↗</span></a></nav>
+  <nav aria-label="Navigation principale"><a href="#decouvrir">Découvrir</a><a href="#installer">Installer</a><a href="#outils">Catalogue</a><a href="#creer">Créer un outil</a><a class="nav-guide" href="Guide-installation-Windows.pdf">Le guide <span aria-hidden="true">↗</span></a></nav>
 </header>
 <main id="contenu">
   <section class="hero wrap" aria-labelledby="titre">
@@ -54,6 +54,17 @@
     <p class="install-note">Un problème avec le téléchargement ? <a class="text-link" href="https://github.com/wood51/tools-launcher/releases/latest">Ouvrir la page de la version</a>.</p>
   </div></section>
 
+  <section id="outils" class="public-catalog wrap section" aria-labelledby="titre-outils">
+    <div class="section-heading"><p class="eyebrow">Le catalogue public</p><h2 id="titre-outils">Choisissez vos outils.<br>Faites place à vos usages.</h2><p>Des extensions gratuites, signées par wood51, à ajouter à votre launcher. Téléchargez un ZIP ci-dessous puis glissez-le dans la fenêtre Catalogue.</p></div>
+    <div class="catalog-items">
+      <article class="catalog-item"><p class="catalog-kind">Outil · 1.5.1</p><h3>Le Tableau</h3><p>Organisez les tâches du bureau dans un tableau partagé : responsables, échéances, récurrences et fichiers liés.</p><a class="button secondary" href="https://github.com/wood51/tools-launcher-public-catalog/raw/refs/heads/main/zips/le_tableau-1.5.1.zip">Télécharger Le Tableau <span aria-hidden="true">↓</span></a><small>À utiliser avec le launcher. Le lancement séparé nécessite Python et les dépendances du README.</small></article>
+      <article class="catalog-item"><p class="catalog-kind">Plugin et outil · 1.0.1</p><h3>Fichier</h3><p>Retrouvez vos fichiers habituels dans le menu du launcher. Choisissez les documents et leur application avec l’éditeur de liste.</p><a class="button secondary" href="https://github.com/wood51/tools-launcher-public-catalog/raw/refs/heads/main/zips/files-1.0.1.zip">Télécharger Fichier <span aria-hidden="true">↓</span></a></article>
+      <article class="catalog-item catalog-themes"><p class="catalog-kind">Trois thèmes · 1.0.0</p><h3>À votre couleur</h3><p>Une ambiance bleu glacé, bleu nuit ou papier clair. Installez un thème puis choisissez-le dans le menu Launcher → Thème.</p><div class="theme-downloads"><a href="https://github.com/wood51/tools-launcher-public-catalog/raw/refs/heads/main/zips/nord-1.0.0.zip"><i class="swatch nord" aria-hidden="true"></i>Nord <span aria-hidden="true">↓</span></a><a href="https://github.com/wood51/tools-launcher-public-catalog/raw/refs/heads/main/zips/ocean-1.0.0.zip"><i class="swatch ocean" aria-hidden="true"></i>Océan <span aria-hidden="true">↓</span></a><a href="https://github.com/wood51/tools-launcher-public-catalog/raw/refs/heads/main/zips/papier-1.0.0.zip"><i class="swatch papier" aria-hidden="true"></i>Papier <span aria-hidden="true">↓</span></a></div><small>Sombre et Clair sont déjà intégrés au launcher.</small></article>
+    </div>
+    <div class="catalog-connect"><div><p class="eyebrow">Tout retrouver dans le launcher</p><h3>Ajoutez le catalogue une seule fois.</h3><p>Dans <strong>Catalogue → Source… → Ajouter…</strong>, choisissez <strong>Dépôt Git</strong> et collez cette adresse. Branche : <strong>main</strong>. Laissez le jeton et le sous-dossier vides.</p><p>Actualisez ensuite le Catalogue et choisissez Installer. Il vous signalera les prochaines versions disponibles.</p></div><div class="catalog-address"><label for="catalog-url">Adresse du catalogue public</label><input id="catalog-url" type="text" readonly value="https://github.com/wood51/tools-launcher-public-catalog.git" spellcheck="false"><button class="copy-button" id="copy-catalog" type="button">Copier l’adresse</button><span id="catalog-copy-status" role="status"></span><a class="text-link" href="https://github.com/wood51/tools-launcher-public-catalog">Voir le catalogue sur GitHub <span aria-hidden="true">↗</span></a></div></div>
+    <p class="install-note">Déjà en version 1.5.1 de Le Tableau ? Réinstallez-la pour bénéficier du correctif d’affichage des formulaires publié sous le même numéro.</p>
+  </section>
+
   <section id="creer" class="create wrap section" aria-labelledby="titre-creer">
     <div class="section-heading"><p class="eyebrow">Et si votre outil n’existait pas encore ?</p><h2 id="titre-creer">Décrivez le besoin.<br>Construisez avec un assistant.</h2><p>Les skills donnent à Claude ou Codex les règles du projet pour vous aider à fabriquer une extension. Vous pouvez commencer sans savoir coder.</p></div>
     <div class="creation-grid"><div><div class="conversation"><span class="prompt-label">Par exemple, vous pourriez demander…</span><p>« Je voudrais un outil pour classer mes fichiers et retrouver rapidement les dossiers dont j’ai besoin. »</p><button class="copy-button" id="copy-prompt" type="button">Copier cet exemple <span aria-hidden="true">↗</span></button><span id="copy-status" role="status"></span></div><ol class="creation-list"><li><strong>Décrivez votre idée.</strong> Le skill aide l’assistant à préciser les fonctionnalités.</li><li><strong>Essayez une première version.</strong> Vous expliquez ce qui vous convient et ce qui reste à ajuster.</li><li><strong>Installez le ZIP obtenu.</strong> Le Catalogue l’ajoute à votre launcher.</li></ol><a class="button secondary" href="Guide-installation-Windows.pdf#page=6">Créer mon premier outil <span aria-hidden="true">↗</span></a><a class="skill-download" id="download-skill" href="https://github.com/wood51/tools-launcher/releases/latest/download/new-extension.zip">Télécharger le skill de création</a></div>
@@ -63,7 +74,7 @@
 
   <section class="faq wrap section" aria-labelledby="titre-faq"><div class="section-heading"><p class="eyebrow">Quelques repères</p><h2 id="titre-faq">Avant votre premier clic.</h2></div>
     <details><summary>Faut-il installer Python avant de commencer ?</summary><p>Essayez d’abord de lancer Tools Launcher. Si le PC a déjà Python et que le launcher démarre, cette étape est inutile. Sinon, le guide indique comment l’installer depuis le Store, sans commande.</p></details>
-    <details><summary>Pourquoi le Catalogue est-il vide ?</summary><p>La nouvelle distribution démarre sans extension. Vous choisissez ensuite vos outils. Une source de catalogue peut vous être fournie, ou vous pouvez glisser directement le ZIP d’une extension dans le Catalogue.</p></details>
+    <details><summary>Pourquoi le Catalogue est-il vide ?</summary><p>La nouvelle distribution démarre sans extension. Ajoutez la source du <a href="#outils">catalogue public</a> ou téléchargez un ZIP sur cette page puis glissez-le dans le Catalogue.</p></details>
     <details><summary>Est-ce que le skill est obligatoire ?</summary><p>Non. Il sert à créer ou modifier des outils avec un assistant. Pour utiliser les extensions existantes, vous avez seulement besoin du launcher.</p></details>
     <details><summary>Comment savoir si une extension est fiable ?</summary><p>Installez uniquement les extensions d’une source ou d’une personne en qui vous avez confiance. Le Catalogue vérifie les signatures lorsqu’elles sont présentes et indique si la provenance n’est pas vérifiée.</p></details>
   </section>

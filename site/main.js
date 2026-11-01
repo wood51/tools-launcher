@@ -8,3 +8,16 @@ document.getElementById('copy-prompt').addEventListener('click', async () => {
     status.textContent = 'Sélectionnez puis copiez l’exemple affiché ci-dessus.';
   }
 });
+
+document.getElementById('copy-catalog').addEventListener('click', async () => {
+  const field = document.getElementById('catalog-url');
+  const status = document.getElementById('catalog-copy-status');
+  try {
+    await navigator.clipboard.writeText(field.value);
+    status.textContent = 'Adresse copiée. Collez-la dans la source du Catalogue.';
+  } catch {
+    field.focus();
+    field.select();
+    status.textContent = 'Adresse sélectionnée : utilisez Ctrl+C pour la copier.';
+  }
+});
