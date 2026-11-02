@@ -31,7 +31,9 @@ mon_outil/
 └─ logic.py          optionnel : logique sans Qt
 ```
 
-Lancer hors lanceur : `pip install -r requirements.txt` (de préférence dans un venv) puis `python main.pyw` (`pythonw main.pyw` sans console). Déposé dans un lanceur : copier le dossier dans `extensions/`, le bootstrap installe les dépendances ; `tl_shim.py` y est inerte.
+Lancer hors lanceur : préparer un environnement isolé, y installer `requirements.txt`, puis lancer `main.pyw` avec son Python (`pythonw` sans console). Documenter la commande adaptée au projet et, si le ZIP doit être essayé par double-clic, fournir une entrée Windows facile à trouver et l'essayer après extraction. Ce ZIP contient du code Python : il ne devient pas un logiciel sans Python parce qu'il possède un shim. Une édition sans Python installé demande une fabrication Windows distincte, par exemple un bundle EXE complet. Déposé dans un lanceur, le bootstrap installe les dépendances ; `tl_shim.py` y est inerte.
+
+Avant la livraison, essayer **le ZIP extrait** sans aucun `core/` accessible, avec des données temporaires ; vérifier le démarrage, une interaction utile et la sortie. Essayer séparément le même ZIP dans une copie isolée du launcher si ce mode est annoncé. Écrire dans le README les étapes d'installation, le fichier ou la commande de lancement et les prérequis. Ne pas modifier les données ou l'installation quotidienne pour ces essais.
 
 ## Dans une discussion sans accès au dépôt ni au lanceur
 

@@ -54,9 +54,11 @@ Un **catalogue** est un `index.json` plus des zips versionnés. Le lanceur en li
 Une extension présente dans plusieurs sources vous laisse choisir celle à installer. Le lanceur vérifie les mises à jour au démarrage puis toutes les heures (badge bleu et notification) ; l'installation se fait toujours à la main, depuis le Catalogue. L'ancienne version est gardée pour un retour arrière.
 
 ### Signatures
-Chaque zip d'extension contient un `SIGNATURE.json` (Ed25519) qui couvre son identifiant, sa version et le contenu de **tous** ses fichiers. Le lanceur ne l'installe depuis un catalogue que si la signature est valide **et** faite par une clé de `core/assets/trusted_keys.json`. Une clé peut être :
+Chaque zip d'extension contient un `SIGNATURE.json` (Ed25519) qui couvre son identifiant, sa version et le contenu de **tous** ses fichiers. Le lanceur ne l'installe depuis un catalogue que si la signature est valide **et** faite par une clé approuvée sur ce poste : fournie dans `core/assets/trusted_keys.json` ou importée depuis **Catalogue > Clés de confiance…**. Une clé peut être :
 - **limitée** à certaines extensions (un auteur ne peut pas remplacer l'outil d'un autre) ;
 - **révoquée**.
+
+**Importer une clé…** accepte un fichier public `.pub.json`, affiche son empreinte à comparer avec celle de l’auteur et permet de limiter les outils autorisés. Aucune clé privée ni aucun mot de passe de publication n’est nécessaire sur un poste qui installe les outils. Les approbations sont conservées dans `core/data/trusted_keys.json`, même après une mise à jour du Launcher. **Retirer la confiance** bloque les prochaines installations et mises à jour de cet auteur, sans supprimer les outils déjà installés. Ce choix local peut être rétabli ; une révocation distribuée avec le Launcher ne peut pas être annulée localement.
 
 Le catalogue (`index.json`) n'est qu'une liste, il n'est pas signé : quelqu'un qui peut écrire dans le dossier ou le dépôt peut masquer une mise à jour, mais pas faire installer du code non signé, ni une autre version que celle annoncée, ni une version plus ancienne que celle installée. Un zip glissé à la main sans signature reste installable, avec l'avertissement « Provenance NON vérifiée ».
 
@@ -72,7 +74,7 @@ python scripts/publish.py <extension | fichier.zip> --catalog <dossier du catalo
 - `keygen` crée votre clé privée (chiffrée par mot de passe, dans `~/.tools_launcher_signing/`, jamais dans un dépôt) et ajoute la clé publique à `core/assets/trusted_keys.json`. **Sauvegardez la clé privée hors ligne** : sans elle, impossible de signer.
 - `publish.py` empaquette, signe et ajoute l'extension au catalogue (zip versionné, `index.json`). Une version publiée ne s'écrase pas.
 - Pour un catalogue Git, `--catalog` désigne un clone local : commitez et poussez ensuite.
-- Pour que d'autres lanceurs acceptent votre clé, sa partie publique doit figurer dans leur `trusted_keys.json`.
+- Pour que d'autres lanceurs acceptent votre clé, fournissez son fichier public `.pub.json` : **Catalogue > Clés de confiance… > Importer une clé…**. La clé privée reste sur le poste de publication.
 - `scripts/sign.py sign-zip` signe un zip existant ; `resign-catalog` signe tous les zips d'un catalogue déjà publié.
 
 ### Avec Claude

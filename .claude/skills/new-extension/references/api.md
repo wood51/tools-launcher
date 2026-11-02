@@ -23,6 +23,12 @@ api = get_api()  # l'extension courante (id : variable TL_EXTENSION_ID, sinon no
 | `api.notify(title, message, level="info")` | notification selon le choix de l'utilisateur (toast du lanceur en bas à droite, notification Windows au nom de l'extension, un seul des deux ; son optionnel) ; `level` : `info`, `warning`, `error` ; renvoie `False` si le lanceur ne tourne pas |
 | `api.set_badge(level)` | badge de l'icône du lanceur : `"blue"` (information), `"red"` (notification, prioritaire), `None` (retire) ; renvoie `False` sans lanceur ; lève `ValueError` pour une autre valeur |
 | `api.launch_tool(extension_id)` | lance l'outil d'une autre extension d'après son `id` |
+| `api.open_path(path)` | ouvre un fichier ou un dossier avec l'association Windows |
+| `api.open_file(path)` / `api.open_folder(path)` | ouvre uniquement le type de chemin attendu |
+| `api.choose_file(parent, title, filter)` | affiche le sélecteur de fichier et renvoie un `Path` ou `None` |
+| `api.choose_folder(parent, title)` | affiche le sélecteur de dossier et renvoie un `Path` ou `None` |
+| `api.confirm(parent, title, message)` | demande une confirmation Oui/Non |
+| `api.get_app_info()` | renvoie l'identifiant et le mode `launcher` ou `standalone` |
 
 Aussi disponible : `core.api.write_json_atomic(path, data)` pour écrire un JSON de façon atomique ailleurs que dans `data/` (créé le dossier parent).
 

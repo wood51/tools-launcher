@@ -25,6 +25,7 @@ from PySide6.QtWidgets import (
 from core.catalog.index import fetch_zip, is_newer, load_catalog
 from core.catalog.sources import get_source, load_sources
 from core.catalog.sources_dialog import SourcesDialog
+from core.catalog.public_keys_dialog import PublicKeysDialog
 from core.deps import install_deps
 from core.installer import (
     InstallError,
@@ -91,6 +92,9 @@ class CatalogWindow(QMainWindow):
         refresh_button.clicked.connect(self.reload)
         top.addWidget(self.source_label, 1)
         top.addWidget(source_button)
+        self.keys_button = QPushButton("Clés de confiance…")
+        self.keys_button.clicked.connect(self.choose_public_keys)
+        top.addWidget(self.keys_button)
         top.addWidget(refresh_button)
         layout.addLayout(top)
 
@@ -129,6 +133,9 @@ class CatalogWindow(QMainWindow):
         dialog.exec()
         if dialog.changed:
             self.reload()
+
+    def choose_public_keys(self) -> None:
+        PublicKeysDialog(self).exec()
 
     def reload(self) -> None:
         sources = [s for s in load_sources() if s.get("enabled", True)]
@@ -367,8 +374,13 @@ class CatalogWindow(QMainWindow):
             self.install_dropped(path)
 
 
-app = QApplication(sys.argv)
-apply_theme(app)
-window = CatalogWindow()
-window.show()
-sys.exit(app.exec())
+def main() -> int:
+    app = QApplication(sys.argv)
+    apply_theme(app)
+    window = CatalogWindow()
+    window.show()
+    return app.exec()
+
+
+if __name__ == "__main__":
+    sys.exit(main())

@@ -14,6 +14,7 @@ QPushButton {
     background: @SURFACE_2; border: 1px solid @BORDER; border-radius: 8px; padding: 8px 16px;
 }
 QPushButton:hover { border-color: @ACCENT; }
+QPushButton:pressed { background: @HOVER_ROW; border-color: @ACCENT; }
 QPushButton:disabled { color: @MUTED; background: @SURFACE; border-color: @SURFACE_2; }
 QPushButton#primary { background: @ACCENT; border-color: @ACCENT; color: @ON_ACCENT; font-weight: 600; }
 QPushButton#primary:hover { background: @ACCENT_HOVER; }
@@ -21,6 +22,9 @@ QPushButton#primary:disabled { background: @SURFACE_2; border-color: @BORDER; co
 QPushButton#toggle:checked { background: @WARN_BG; border-color: @WARN; color: @WARN; }
 QPushButton#link { background: transparent; border: none; color: @ACCENT; padding: 2px 6px; }
 QPushButton#link:hover { text-decoration: underline; }
+QToolButton { background: transparent; border: 1px solid transparent; border-radius: 6px; padding: 6px; }
+QToolButton:hover { background: @SURFACE_2; border-color: @BORDER; }
+QToolButton:pressed { background: @HOVER_ROW; border-color: @ACCENT; }
 
 QTableWidget {
     background: @SURFACE; alternate-background-color: @ALT_ROW; border: 1px solid @BORDER;
@@ -66,22 +70,36 @@ QFrame#drop[hover="true"] { border-color: @ACCENT; background: @DROP_HOVER; }
 QProgressBar { background: @SURFACE_2; border: none; border-radius: 2px; max-height: 4px; }
 QProgressBar::chunk { background: @ACCENT; border-radius: 2px; }
 
-QScrollBar:vertical { background: transparent; width: 10px; }
-QScrollBar::handle:vertical { background: @BORDER; border-radius: 5px; min-height: 30px; }
-QScrollBar:horizontal { background: transparent; height: 10px; }
-QScrollBar::handle:horizontal { background: @BORDER; border-radius: 5px; min-width: 30px; }
+QScrollBar:vertical { background: transparent; width: 8px; margin: 2px 0; }
+QScrollBar::handle:vertical { background: @MUTED; border-radius: 4px; min-height: 30px; }
+QScrollBar::handle:vertical:hover { background: @ACCENT; }
+QScrollBar:horizontal { background: transparent; height: 8px; margin: 0 2px; }
+QScrollBar::handle:horizontal { background: @MUTED; border-radius: 4px; min-width: 30px; }
+QScrollBar::handle:horizontal:hover { background: @ACCENT; }
 QScrollBar::add-line, QScrollBar::sub-line { height: 0; width: 0; }
 QScrollBar::add-page, QScrollBar::sub-page { background: transparent; }
 QMessageBox, QDialog { background: @SURFACE; }
 
-QComboBox, QLineEdit {
-    background: @SURFACE_2; border: 1px solid @BORDER; border-radius: 6px; padding: 2px 8px; min-height: 22px;
+QComboBox, QLineEdit, QAbstractSpinBox, QTextEdit, QTextBrowser, QPlainTextEdit {
+    background: @SURFACE_2; border: 1px solid @BORDER; border-radius: 6px; padding: 5px 9px; min-height: 24px;
     selection-background-color: @SELECTION;
 }
-QComboBox:hover, QLineEdit:focus { border-color: @ACCENT; }
+QComboBox:hover, QComboBox:focus, QLineEdit:focus, QAbstractSpinBox:hover, QAbstractSpinBox:focus,
+QTextEdit:focus, QTextBrowser:focus, QPlainTextEdit:focus { border-color: @ACCENT; }
 QLineEdit[invalid="true"], QLineEdit[invalid="true"]:focus { border-color: @WARN; background: @WARN_BG; }
 QLabel#total { font-size: 14pt; font-weight: 600; }
-QComboBox::drop-down { border: none; width: 20px; }
+QComboBox { padding-right: 30px; }
+QComboBox::drop-down, QDateEdit::drop-down { border: none; background: transparent; width: 28px; }
+QComboBox::down-arrow, QDateEdit::down-arrow { image: url("@ICON_CHEVRON_DOWN"); width: 12px; height: 12px; }
+QAbstractSpinBox { padding-right: 28px; }
+QAbstractSpinBox::up-button, QAbstractSpinBox::down-button {
+    subcontrol-origin: border; border: none; background: transparent; width: 24px;
+}
+QAbstractSpinBox::up-button { subcontrol-position: top right; }
+QAbstractSpinBox::down-button { subcontrol-position: bottom right; }
+QAbstractSpinBox::up-button:hover, QAbstractSpinBox::down-button:hover { background: @HOVER_ROW; }
+QAbstractSpinBox::up-arrow { image: url("@ICON_CHEVRON_UP"); width: 11px; height: 11px; }
+QAbstractSpinBox::down-arrow { image: url("@ICON_CHEVRON_DOWN"); width: 11px; height: 11px; }
 QComboBox QAbstractItemView {
     background: @SURFACE_2; border: 1px solid @BORDER; selection-background-color: @SELECTION;
 }

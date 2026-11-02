@@ -1,0 +1,7 @@
+{
+  "id": "mon_outil",
+  "name": "Mon outil",
+  "version": "0.1.0",
+  "tooltip": "Outil créé avec le Tools Launcher SDK",
+  "tool": { "entry": "main.pyw" }
+}

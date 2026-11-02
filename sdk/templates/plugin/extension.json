@@ -1,0 +1,7 @@
+{
+  "id": "mon_plugin",
+  "name": "Mon plugin",
+  "version": "0.1.0",
+  "tooltip": "Plugin créé avec le Tools Launcher SDK",
+  "plugin": { "entry": "main.py" }
+}

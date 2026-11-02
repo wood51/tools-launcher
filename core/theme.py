@@ -168,6 +168,9 @@ def apply_theme(app) -> None:
     """À appeler dans chaque outil après QApplication : applique le thème et suit ses changements."""
     from PySide6.QtCore import QFileSystemWatcher
     from PySide6 import QtSvg  # noqa: F401  (sans cet import, Qt ne charge pas les icônes SVG)
+    from core.i18n import install_french_qt
+
+    install_french_qt(app)
 
     def reapply() -> None:
         apply_theme_now(app, get_theme())
@@ -221,7 +224,13 @@ INDICATOR_SVGS = {
     "ICON_CHECK": '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18"><path d="M4.5 9.5l3 3 6-7" fill="none" '
     'stroke="{color}" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>',
     "ICON_RADIO": '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18"><circle cx="9" cy="9" r="3.6" fill="{color}"/></svg>',
+    "ICON_CHEVRON_DOWN": '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.5 6l4.5 4 4.5-4" fill="none" '
+    'stroke="{color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    "ICON_CHEVRON_UP": '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.5 10l4.5-4 4.5 4" fill="none" '
+    'stroke="{color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
 }
+ICON_COLOR_KEYS = {"ICON_CHECK":"ON_ACCENT","ICON_RADIO":"ON_ACCENT",
+                   "ICON_CHEVRON_DOWN":"TEXT","ICON_CHEVRON_UP":"TEXT"}
 
 
 def indicator_icon(kind: str, color: str) -> str:
@@ -239,11 +248,12 @@ def indicator_icon(kind: str, color: str) -> str:
 
 def render_stylesheet(colors: dict, extra_qss: str = "") -> str:
     """theme.qss avec les jetons @NOM remplacés par `colors`, suivi de `extra_qss`.
-    `@ICON_CHECK` et `@ICON_RADIO` donnent le chemin d'une image de la couleur `ON_ACCENT`."""
+    Les jetons `@ICON_*` donnent le chemin d'une image adaptée au contraste du thème."""
     def token(match) -> str:
         key = match.group(1)
         if key in INDICATOR_SVGS:
-            return indicator_icon(key, colors.get("ON_ACCENT", DEFAULT_COLORS["ON_ACCENT"]))
+            color_key=ICON_COLOR_KEYS[key]
+            return indicator_icon(key,colors.get(color_key,DEFAULT_COLORS[color_key]))
         if key not in colors:
             print(f"jeton inconnu dans la feuille de style : @{key}")
             return match.group(0)

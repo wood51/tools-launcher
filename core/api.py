@@ -152,6 +152,55 @@ class ExtensionAPI:
             raise ValueError(f"badge inconnu : {level}")
         return send_message({"cmd": "set_badge", "ext": self._id, "level": level})
 
+    def open_path(self, path: str | Path) -> bool:
+        """Ouvre un fichier ou un dossier avec l'association Windows."""
+        target = Path(path)
+        if not target.exists():
+            self.log(f"chemin introuvable : {target}")
+            return False
+        try:
+            os.startfile(str(target))
+            return True
+        except OSError as error:
+            self.log(f"ouverture impossible : {error}")
+            return False
+
+    def open_file(self, path: str | Path) -> bool:
+        """Ouvre un fichier avec l'application associée."""
+        target = Path(path)
+        return self.open_path(target) if target.is_file() else False
+
+    def open_folder(self, path: str | Path) -> bool:
+        """Ouvre un dossier dans l'Explorateur Windows."""
+        target = Path(path)
+        return self.open_path(target) if target.is_dir() else False
+
+    def choose_file(self, parent=None, title: str = "Choisir un fichier", filter: str = "Tous les fichiers (*)") -> Path | None:
+        """Affiche le sélecteur de fichier Qt et renvoie un `Path`, ou `None`."""
+        from PySide6.QtWidgets import QFileDialog
+
+        filename, _ = QFileDialog.getOpenFileName(parent, title, "", filter)
+        return Path(filename) if filename else None
+
+    def choose_folder(self, parent=None, title: str = "Choisir un dossier") -> Path | None:
+        """Affiche le sélecteur de dossier Qt et renvoie un `Path`, ou `None`."""
+        from PySide6.QtWidgets import QFileDialog
+
+        folder = QFileDialog.getExistingDirectory(parent, title)
+        return Path(folder) if folder else None
+
+    def confirm(self, parent, title: str, message: str) -> bool:
+        """Demande une confirmation standard et renvoie True si l'utilisateur accepte."""
+        from PySide6.QtWidgets import QMessageBox
+
+        return QMessageBox.question(
+            parent, title, message, QMessageBox.Yes | QMessageBox.No, QMessageBox.No
+        ) == QMessageBox.Yes
+
+    def get_app_info(self) -> dict[str, str]:
+        """Retourne les informations utiles au code métier sans exposer les chemins internes."""
+        return {"id": self._id, "mode": "launcher" if os.environ.get(ENV_EXTENSION_ID) else "standalone"}
+
     def apply_theme(self, app) -> None:
         """À appeler dans un outil, après la création du `QApplication`."""
         from core.theme import apply_theme
