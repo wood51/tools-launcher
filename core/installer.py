@@ -11,6 +11,8 @@ import os
 import shutil
 import stat
 import tempfile
+import time
+import uuid
 import zipfile
 from dataclasses import dataclass
 from pathlib import Path, PurePosixPath
@@ -225,6 +227,31 @@ def discard(prepared: Prepared) -> None:
 #### Installation, retrait, retour arrière ####
 
 
+def _clear_slot(path: Path) -> None:
+    """Libère `path` (ancienne sauvegarde) ; un rmtree partiel (fichier verrouillé, OneDrive) ne doit pas
+    bloquer l'échange. Sinon le reste est écarté sous un nom unique ; échec seulement si rien n'est possible."""
+    if not path.exists():
+        return
+    for attempt in range(3):
+        shutil.rmtree(path, ignore_errors=True)
+        if not path.exists():
+            return
+        time.sleep(0.2 * (attempt + 1))
+    leftover = path.with_name(f"{path.name}.old-{uuid.uuid4().hex[:8]}")
+    try:
+        os.replace(path, leftover)
+    except OSError as e:
+        raise InstallError(f"sauvegarde précédente impossible à supprimer ({path.name}) : {e}") from e
+    shutil.rmtree(leftover, ignore_errors=True)  # au mieux ; le reliquat éventuel est purgé plus tard
+
+
+def _purge_leftovers(extension_id: str) -> None:
+    """Supprime au mieux les reliquats `<id>.old-*` laissés par un `_clear_slot` précédent."""
+    if BACKUP_DIR.is_dir():
+        for old in BACKUP_DIR.glob(f"{extension_id}.old-*"):
+            shutil.rmtree(old, ignore_errors=True)
+
+
 def commit(prepared: Prepared) -> None:
     """Échange l'ancienne version (gardée dans .extensions_backup) contre la nouvelle ; `data/` suit."""
     target = EXTENSIONS_DIR / prepared.id
@@ -233,11 +260,12 @@ def commit(prepared: Prepared) -> None:
     try:
         if target.exists():
             BACKUP_DIR.mkdir(exist_ok=True)
-            shutil.rmtree(backup, ignore_errors=True)
+            _purge_leftovers(prepared.id)
+            _clear_slot(backup)
             try:
                 os.replace(target, backup)
             except OSError as e:
-                raise InstallError("l'extension est ouverte : fermez-la d'abord") from e
+                raise InstallError(f"l'extension est ouverte : fermez-la d'abord ({e})") from e
             try:
                 if (backup / "data").is_dir():
                     shutil.move(str(backup / "data"), str(prepared.folder / "data"))
@@ -261,11 +289,12 @@ def uninstall(extension_id: str, keep_data: bool) -> None:
         raise InstallError("extension introuvable")
     backup = BACKUP_DIR / extension_id
     BACKUP_DIR.mkdir(exist_ok=True)
-    shutil.rmtree(backup, ignore_errors=True)
+    _purge_leftovers(extension_id)
+    _clear_slot(backup)
     try:
         os.replace(target, backup)
     except OSError as e:
-        raise InstallError("l'extension est ouverte : fermez-la d'abord") from e
+        raise InstallError(f"l'extension est ouverte : fermez-la d'abord ({e})") from e
     if (backup / "data").is_dir():
         if keep_data:  # le dossier reste, sans manifeste : ignoré par le lanceur, repris à la réinstallation
             target.mkdir()
@@ -291,7 +320,7 @@ def restore_backup(extension_id: str) -> None:
     target = EXTENSIONS_DIR / extension_id
     backup = BACKUP_DIR / extension_id
     swap = BACKUP_DIR / (extension_id + ".swap")
-    shutil.rmtree(swap, ignore_errors=True)
+    _clear_slot(swap)
     try:
         if target.exists():
             os.replace(target, swap)
@@ -299,7 +328,7 @@ def restore_backup(extension_id: str) -> None:
     except OSError as e:
         if swap.exists() and not target.exists():
             os.replace(swap, target)
-        raise InstallError("l'extension est ouverte : fermez-la d'abord") from e
+        raise InstallError(f"l'extension est ouverte : fermez-la d'abord ({e})") from e
     if (swap / "data").is_dir():
         shutil.rmtree(target / "data", ignore_errors=True)
         shutil.move(str(swap / "data"), str(target / "data"))

@@ -8,9 +8,11 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from core.paths import CORE_APPS, CORE_DIR, ICONS_DIR, PYTHONW
 from core.api import send_message
 from core.catalog.index import find_updates
+from core import selfupdate
+from core.paths import launcher_version
 from PySide6.QtCore import QObject, Qt, QTimer, Signal
 from PySide6.QtGui import QAction, QActionGroup, QIcon
-from PySide6.QtWidgets import QApplication, QSystemTrayIcon, QMenu
+from PySide6.QtWidgets import QApplication, QMessageBox, QSystemTrayIcon, QMenu
 from core.theme import apply_theme, discover_themes, get_theme, set_theme
 from core.registry import discover_tools, launch_tool
 from core.channel import ChannelServer
@@ -81,6 +83,77 @@ def run_tool(tool: dict) -> None:
             )
 
     QTimer.singleShot(5000, report)
+
+
+#### Mise à jour du lanceur ####
+
+
+class LauncherUpdater(QObject):
+    """Cherche une release plus récente (thread), demande confirmation, télécharge, vérifie, applique, relance."""
+
+    checked = Signal(object, str, bool)  # release ou None, erreur, demandé par l'utilisateur
+    applied = Signal(str)  # erreur éventuelle
+
+    def __init__(self) -> None:
+        super().__init__()
+        self.busy = False
+        self.checked.connect(self.on_checked)
+        self.applied.connect(self.on_applied)
+
+    def check(self, manual: bool) -> None:
+        if self.busy:
+            return
+        self.busy = True
+
+        def work() -> None:
+            try:
+                self.checked.emit(selfupdate.check_latest(), "", manual)
+            except selfupdate.UpdateError as e:
+                self.checked.emit(None, str(e), manual)
+
+        threading.Thread(target=work, daemon=True).start()
+
+    def on_checked(self, release, error: str, manual: bool) -> None:
+        self.busy = False
+        if error or release is None:
+            if manual:
+                if error:
+                    QMessageBox.warning(None, "Mise à jour du lanceur", error)
+                else:
+                    QMessageBox.information(None, "Mise à jour du lanceur", f"Tools Launcher {launcher_version()} est à jour.")
+            return
+        if not manual:  # contrôle automatique : une notification, jamais d'installation sans clic
+            host.notify("launcher", "Mise à jour du lanceur", f"Version {release.version} disponible.", "info", lambda: self.propose(release))
+            return
+        self.propose(release)
+
+    def propose(self, release) -> None:
+        box = QMessageBox(QMessageBox.Question, "Mise à jour du lanceur",
+                          f"Installer Tools Launcher {release.version} (installé : {launcher_version()}) ?\n"
+                          "Le lanceur redémarrera ; vos extensions et données ne sont pas touchées.")
+        if release.notes.strip():
+            box.setDetailedText(release.notes.strip())
+        box.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
+        if box.exec() != QMessageBox.Yes or self.busy:
+            return
+        self.busy = True
+        host.notify("launcher", "Mise à jour du lanceur", "Téléchargement et vérification en cours…", "info")
+
+        def work() -> None:
+            try:
+                selfupdate.apply(selfupdate.download(release), release.version)
+                self.applied.emit("")
+            except selfupdate.UpdateError as e:
+                self.applied.emit(str(e))
+
+        threading.Thread(target=work, daemon=True).start()
+
+    def on_applied(self, error: str) -> None:
+        self.busy = False
+        if error:
+            QMessageBox.warning(None, "Mise à jour du lanceur", error)
+        else:
+            restart_launcher()
 
 
 #### Mises à jour des extensions ####
@@ -183,6 +256,7 @@ theme_menu.aboutToShow.connect(rebuild_theme_menu)
 
 launcher_menu.addAction("Catalogue", open_catalog)
 launcher_menu.addAction("Paramètres", open_settings)
+launcher_menu.addAction("Mettre à jour le lanceur…", lambda: launcher_updater.check(True))
 
 menu.addSeparator()
 menu.addAction("Quitter", app.quit)
@@ -211,7 +285,9 @@ host.run_start()
 notified_updates: set = set()
 update_checker = UpdateChecker()
 update_checker.found.connect(on_updates)
+launcher_updater = LauncherUpdater()
 QTimer.singleShot(3000, update_checker.check)
+QTimer.singleShot(8000, lambda: launcher_updater.check(False))
 update_timer = QTimer()
 update_timer.timeout.connect(update_checker.check)
 update_timer.start(60 * 60 * 1000)  # toutes les heures
